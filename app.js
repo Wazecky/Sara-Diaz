@@ -50,6 +50,7 @@ const packages = [
     name: "10 GBP = 50 credits",
     credits: 40,
     bonus: 10,
+    total: 50,
     chatTokens: 25,
     pictureTokens: 2,
     checkoutLink: "https://buy.stripe.com/4gw5lS2H562Kat24gh",
@@ -58,6 +59,7 @@ const packages = [
     name: "25 GBP = 125 Credits",
     credits: 100,
     bonus: 25,
+    total: 125,
     chatTokens: 62,
     pictureTokens: 6,
     checkoutLink: "https://buy.stripe.com/8wM3dKgxV9eW58I6oq",
@@ -66,6 +68,7 @@ const packages = [
     name: "50 GBP = 275 credits",
     credits: 200,
     bonus: 75,
+    total: 275,
     chatTokens: 137,
     pictureTokens: 13,
     checkoutLink: "https://buy.stripe.com/3cs15CchF0Iq8kU28b",
@@ -74,6 +77,7 @@ const packages = [
     name: "100 GBP = 550 credits",
     credits: 400,
     bonus: 150,
+    total: 550,
     chatTokens: 275,
     pictureTokens: 27,
     checkoutLink: "https://buy.stripe.com/dR6cOk4Pd9eWeJi6os",
@@ -82,6 +86,7 @@ const packages = [
     name: "250 GBP = 1100 credits",
     credits: 850,
     bonus: 250,
+    total: 1100,
     chatTokens: 550,
     pictureTokens: 55,
     checkoutLink: "https://buy.stripe.com/00g9C8ftRgHofNmdQV",
@@ -90,6 +95,7 @@ const packages = [
     name: "500 GBP = 2500 credits",
     credits: 1750,
     bonus: 750,
+    total: 2500,
     chatTokens: 1250,
     pictureTokens: 125,
     checkoutLink: "https://buy.stripe.com/cN29C85Th1Mu6cMbIO",
@@ -194,7 +200,7 @@ bot.use(async (ctx, next) => {
     const selectedPackage = userSelectedPackage[id];
 
     if (selectedPackage) {
-      const newCredits = selectedPackage.credits;
+      const newCredits = selectedPackage.total;
       const client = await dbPool.connect(); // Acquire a connection from the pool
       try {
         const query = 'UPDATE users SET credits = credits + $1 WHERE id = $2';
@@ -223,7 +229,7 @@ bot.command("checkcredit", async (ctx) => {
   const userCredits = await getUserCredits(userId);
 
   // Display the credit balance to the user
-  ctx.reply(`Your credit balance is: ${userCredits} credits.`);
+  ctx.reply(`Your credit balance is: ${userCredits} credits, /topup to add more credits🥰`);
 });
 
 // Helper function to get user credits from the database
