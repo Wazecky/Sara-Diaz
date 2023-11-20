@@ -254,6 +254,17 @@ async function getUserCredits(userId) {
 }
 
 async function sendGPTRequest(apiKey, msg, personaPrompt, ctx, retryCount = 3) {
+  const userId = ctx.from.id;
+
+  // Check if persona prompt has been sent in the current session
+  if (!personaSent[userId]) {
+    // If not sent, include the persona prompt
+    personaSent[userId] = true; // Set personaSent to true to indicate that the prompt has been sent
+  } else {
+    // If persona prompt has been sent, exclude it
+    personaPrompt = null;
+  }
+
   const promises = Array.from({ length: retryCount }, (_, i) =>
     makeGPTRequest(apiKey, msg, personaPrompt, ctx, i + 1)
   );
